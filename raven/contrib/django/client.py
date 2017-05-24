@@ -33,6 +33,7 @@ from raven.contrib.django.resolver import RouteResolver
 from raven.utils.wsgi import get_headers, get_environ
 from raven.utils import once
 from raven import breadcrumbs
+from rest_framework.request import Request
 
 __all__ = ('DjangoClient',)
 
@@ -265,7 +266,7 @@ class DjangoClient(Client):
         if request is None:
             request = getattr(SentryMiddleware.thread, 'request', None)
 
-        is_http_request = isinstance(request, HttpRequest)
+        is_http_request = isinstance(request, HttpRequest) or isinstance(request, Request)
         if is_http_request:
             data.update(self.get_data_from_request(request))
 
